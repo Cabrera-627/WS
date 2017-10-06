@@ -22,7 +22,7 @@ import javax.websocket.server.ServerEndpoint;
  *
  * @author Sergio Cabrera
  */
-@ServerEndpoint("/socket")
+@ServerEndpoint("/socketServer")
 public class WebSocketServer {
     
     private static List<Session> sessions = Collections.synchronizedList(new ArrayList<Session>());
