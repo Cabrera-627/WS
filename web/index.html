@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <input id="nk" placeholder="Nickname"/>
+        <textarea id="text"></textarea>
+        <button id="btn">send</button>
+        <button id="btnc">close</button>
+        <ul id="chat"></ul>
+        <script>
+            var ws = new WebSocket("ws://localhost:8084/WS/socket");
+            
+            function get(id) {
+                return document.getElementById(id);
+            };
+            
+            ws.onopen = function(evt) {
+                console.log(evt);
+            };
+            
+            ws.onclose = function(evt) {
+                console.log(evt);
+            };
+            
+            ws.onerror = function(evt) {
+                console.log(evt);
+            };
+            
+            ws.onmessage = function(evt) {
+                let data = JSON.parse(evt.data);
+                get('chat').innerHTML += `<li><b>${data.nk}</b>: ${data.text}</li>`;
+            };
+            
+            get('btn').addEventListener('click', function() {
+                var text = get('text').value;
+                var nk = get('nk').value;
+                var data = {nk, text};
+                ws.send(JSON.stringify(data));
+                //text.value = "";
+            }, null);
+            
+            get('btnc').addEventListener('click', function() {
+                ws.close();
+            }, null);
+        </script>
+    </body>
+</html>
